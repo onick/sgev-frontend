@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es-DO">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="description" content="Sistema de gestión de eventos y visitantes del Centro Cultural Banreservas" />
+  <meta name="author" content="Centro Cultural Banreservas" />
+  <meta name="theme-color" content="#003366" />
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Centro Cultural Banreservas - Sistema de Gestión" />
+  <meta property="og:description" content="Sistema de gestión de eventos y visitantes del Centro Cultural Banreservas" />
+  <meta property="og:image" content="/ccb-og-image.jpg" />
+  
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:title" content="Centro Cultural Banreservas - Sistema de Gestión" />
+  <meta property="twitter:description" content="Sistema de gestión de eventos y visitantes del Centro Cultural Banreservas" />
+  <meta property="twitter:image" content="/ccb-twitter-image.jpg" />
+  
+  <!-- PWA -->
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="apple-touch-icon" href="/icon-192x192.png" />
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23003366'/><text y='70' font-size='60' fill='white' text-anchor='middle' x='50' font-family='serif' font-weight='bold'>CCB</text></svg>" />
+  
+  <!-- Preload critical resources -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+  <!-- CSS crítico inline para evitar FOUC -->
+  <style>
+    /* Critical CSS para cargar inicial */
+    * { 
+      margin: 0; 
+      padding: 0; 
+      box-sizing: border-box; 
+    }
+    
+    html { 
+      font-size: 16px; 
+      -webkit-text-size-adjust: 100%; 
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: #343a40;
+      background-color: #f8f9fa;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow: hidden; /* Deshabilita el scroll durante la carga inicial */
+    }
+    
+    #root {
+      min-height: 100vh;
+    }
+    
+    /* Loading inicial */
+    .initial-loader {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #003366, #0066cc);
+      color: white;
+      flex-direction: column;
+      font-family: inherit;
+    }
+    
+    .initial-loader h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      font-weight: 300;
+      text-align: center;
+    }
+    
+    .initial-loader p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 4px solid rgba(255, 255, 255, 0.3);
+      border-top-color: #d4af37;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 1rem auto 0;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    /* Ocultar loader cuando la app está lista */
+    .app-ready .initial-loader {
+      display: none;
+    }
+    body.app-ready { /* Restaura el scroll cuando la app está lista */
+      overflow: auto;
+    }
+  </style>
+  
+  <title>Centro Cultural Banreservas - Sistema de Gestión</title>
+</head>
+<body>
+  <!-- Loader inicial mientras carga la aplicación -->
+  <div id="initial-loader" class="initial-loader">
+    <div style="text-align: center;">
+      <!-- Logo CCB simple -->
+      <img src="/logo.png" alt="Logo CCB" style="
+        width: 80px; /* O ajusta según el tamaño deseado */
+        height: auto; /* Para mantener la proporción */
+        margin: 0 auto 2rem;
+        display: block; /* Asegura que el margen auto funcione */
+      ">
+      
+      <h1>Centro Cultural Banreservas</h1>
+      <p>Iniciando Sistema de Gestión de Eventos y Visitantes...</p>
+      <div class="spinner"></div>
+    </div>
+  </div>
+
+  <!-- Contenedor principal de la aplicación -->
+  <div id="root"></div>
+
+  <!-- Script para ocultar loader cuando la app esté lista -->
+  <script>
+    // Ocultar loader inicial cuando el DOM esté listo
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(function() {
+        const loader = document.getElementById('initial-loader');
+        const root = document.getElementById('root');
+        
+        // Verificar si la aplicación se cargó
+        const checkAppLoaded = () => {
+          if (root && root.children.length > 0) {
+            loader.style.opacity = '0';
+            loader.style.transition = 'opacity 0.5s ease';
+            setTimeout(() => {
+              loader.style.display = 'none';
+              document.body.classList.add('app-ready');
+            }, 500);
+          } else {
+            setTimeout(checkAppLoaded, 100);
+          }
+        };
+        
+        checkAppLoaded();
+      }, 1000); // Mínimo 1 segundo de loading para UX
+    });
+
+    // Configuración global para el kiosco
+    window.SGEV_CONFIG = {
+      API_URL: 'https://sgev-backend.onrender.com/api',
+      KIOSK_MODE: true,
+      AUTO_RESET_TIME: 300000, // 5 minutos
+      IDLE_TIME: 30000, // 30 segundos
+      VERSION: '1.0.0'
+    };
+
+    // Detección de capacidades del dispositivo
+    window.DEVICE_CAPABILITIES = {
+      isTouchDevice: 'ontouchstart' in window || navigator.maxTouchPoints > 0,
+      isOnline: navigator.onLine,
+      supportsServiceWorker: 'serviceWorker' in navigator,
+      supportsNotifications: 'Notification' in window,
+      isKioskMode: window.location.search.includes('kiosk=true')
+    };
+
+    // Error handler global para debugging
+    window.addEventListener('error', function(e) {
+      console.error('Error global:', e.error);
+      
+      // En caso de error crítico, mostrar mensaje de fallback
+      if (e.error && e.error.message && e.error.message.includes('Loading chunk')) {
+        const errorDiv = document.createElement('div');
+        errorDiv.innerHTML = `
+          <div style="
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #003366;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            z-index: 10000;
+          ">
+            <h2 style="margin-bottom: 1rem;">⚠️ Error de Conexión</h2>
+            <p style="margin-bottom: 2rem; max-width: 500px;">
+              Hubo un problema al cargar la aplicación. 
+              Esto puede deberse a una conexión lenta o problemas temporales.
+            </p>
+            <button onclick="window.location.reload()" style="
+              padding: 1rem 2rem;
+              background: #d4af37;
+              color: white;
+              border: none;
+              border-radius: 8px;
+              font-size: 1rem;
+              cursor: pointer;
+            ">
+              🔄 Reintentar
+            </button>
+          </div>
+        `;
+        document.body.appendChild(errorDiv);
+      }
+    });
+
+    // Service Worker registration (solo en producción)
+    if ('serviceWorker' in navigator && window.location.hostname !== 'localhost') {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/sw.js')
+          .then(function(registration) {
+            console.log('ServiceWorker registrado correctamente:', registration.scope);
+          })
+          .catch(function(error) {
+            console.log('ServiceWorker falló:', error);
+          });
+      });
+    }
+  </script>
+
+  <!-- Cargar la aplicación principal -->
+  <script type="module" src="/src/index.jsx"></script>
+</body>
+</html>
