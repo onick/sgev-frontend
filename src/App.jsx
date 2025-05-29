@@ -1,8 +1,10 @@
-// App.jsx - Versión con diseño profesional y logo CCB
-import { createSignal, onMount } from 'solid-js';
+// App.jsx - Versión con navegación REACTIVA correcta en SolidJS
+import { createSignal, onMount, Show, Switch, Match } from 'solid-js';
+import EventsPage from './pages/EventsPage';
 
 function App() {
   const [selectedCard, setSelectedCard] = createSignal(null);
+  const [currentPage, setCurrentPage] = createSignal('home'); // home | events | register | checkin
 
   onMount(() => {
     // Reset completo del documento
@@ -14,9 +16,30 @@ function App() {
   });
 
   const handleCardClick = (cardType) => {
+    console.log('🔍 Card clicked:', cardType);
     setSelectedCard(cardType);
+    
+    // Navegación inmediata
+    console.log(`📱 Navegando a: ${cardType}`);
+    console.log('📊 Current page before:', currentPage());
+    
+    if (cardType === 'events') {
+      console.log('✅ Setting page to events');
+      setCurrentPage('events');
+    } else if (cardType === 'register') {
+      console.log('✅ Setting page to register');
+      setCurrentPage('register');
+    } else if (cardType === 'checkin') {
+      console.log('✅ Setting page to checkin');
+      setCurrentPage('checkin');
+    } else if (cardType === 'admin') {
+      console.log('🔐 Acceso administrativo - Por implementar');
+    }
+    
+    console.log('📊 Current page after:', currentPage());
+    
+    // Reset del estado visual después de la navegación
     setTimeout(() => {
-      console.log(`Navegando a: ${cardType}`);
       setSelectedCard(null);
     }, 300);
   };
@@ -43,327 +66,327 @@ function App() {
     }
   ];
 
+  // Función para volver al inicio
+  const goHome = () => {
+    console.log('🏠 Volviendo al inicio');
+    setCurrentPage('home');
+  };
+
+  // IMPORTANTE: En SolidJS, usamos Switch/Match o Show para renderizado condicional reactivo
   return (
-    <div style={{
-      width: '100vw',
-      height: '100vh',
-      background: 'linear-gradient(135deg, #003366 0%, #0066cc 100%)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      margin: '0',
-      padding: '20px',
-      boxSizing: 'border-box',
-      fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-      position: 'relative'
-    }}>
-      {/* Caja blanca profesional - CON ESQUINAS REDONDEADAS PERFECTAS */}
-      <div 
-        className="kiosk-container"
-        style={{
-          background: 'rgba(255, 255, 255, 0.98)',
-          borderRadius: '60px', // Radio extremo para diagnóstico - debe ser MUY visible
-          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12), 0 4px 16px rgba(0, 0, 0, 0.08)', // Sombra suave para separar del fondo
-          padding: '3rem 2rem',
-          maxWidth: '888px',
-          width: '80%',
-          textAlign: 'center',
-          backdropFilter: 'blur(10px)', // DEVUELTO - no era el culpable
-          border: '1px solid rgba(255, 255, 255, 0.3)',
-          position: 'relative',
-          margin: '0 auto',
-          transform: 'translateX(0)',
-          WebkitBorderRadius: '60px', // Para compatibilidad con Safari
-          MozBorderRadius: '60px', // Para compatibilidad con Firefox
-          overflow: 'hidden', // Asegura que el contenido no se salga de las esquinas redondeadas
-          boxSizing: 'border-box'
-      }}>
-        {/* Logo CCB real - PERFECTAMENTE CENTRADO SIN FONDO */}
+    <Switch>
+      <Match when={currentPage() === 'events'}>
+        {console.log('📱 Rendering EventsPage')}
+        <EventsPage onBack={goHome} />
+      </Match>
+      
+      <Match when={currentPage() === 'register'}>
         <div style={{
-          width: '100%',
+          width: '100vw',
+          height: '100vh',
+          background: 'linear-gradient(135deg, #003366 0%, #0066cc 100%)',
           display: 'flex',
-          justifyContent: 'center',
           alignItems: 'center',
-          marginBottom: '2.5rem',
-          textAlign: 'center'
-        }}>
-          <img 
-            src="/logo.png" 
-            alt="Centro Cultural Banreservas"
-            style={{
-              width: '100px',
-              height: '100px',
-              objectFit: 'contain',
-              display: 'block',
-              margin: '0 auto',
-              filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.1))'
-            }}
-          />
-        </div>
-
-        {/* Título principal profesional - PERFECTAMENTE CENTRADO */}
-        <div style={{ 
-          textAlign: 'center', 
-          width: '100%', 
-          display: 'flex', 
           justifyContent: 'center',
-          marginBottom: '1rem'
+          color: 'white',
+          fontSize: '2rem',
+          textAlign: 'center',
+          fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
         }}>
-          <h1 style={{
-            fontSize: '2.5rem',
-            color: '#1a1a1a',
-            margin: '0',
-            fontWeight: '300',
-            letterSpacing: '-0.5px',
-            lineHeight: '1.2',
-            textShadow: '0 1px 3px rgba(0,0,0,0.1)',
-            textAlign: 'center',
-            width: '100%'
-          }}>
-            ¡Bienvenido al Centro Cultural Banreservas!
-          </h1>
-        </div>
-
-        {/* Subtítulo elegante - PERFECTAMENTE CENTRADO */}
-        <div style={{ 
-          textAlign: 'center', 
-          width: '100%', 
-          display: 'flex', 
-          justifyContent: 'center',
-          marginBottom: '3rem'
-        }}>
-          <p style={{
-            color: '#6c757d',
-            margin: '0',
-            fontSize: '1.2rem',
-            fontWeight: '400',
-            letterSpacing: '0.3px',
-            textAlign: 'center',
-            width: '100%'
-          }}>
-            Por favor seleccione una opción:
-          </p>
-        </div>
-
-        {/* Grid de tarjetas profesionales - FILA HORIZONTAL PARA TABLETS */}
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          gap: '1.5rem',
-          marginBottom: '3rem',
-          width: '100%'
-        }}>
-          {kioskCards.map((card) => (
-            <div
-              key={card.id}
+          <div>
+            <h1>📝 Módulo de Registro</h1>
+            <p style={{ fontSize: '1.2rem', marginTop: '1rem' }}>Por implementar</p>
+            <button
+              onClick={goHome}
               style={{
-                background: 'linear-gradient(145deg, #ffffff, #f8f9fa)',
-                border: '2px solid #e9ecef',
-                borderRadius: '24px', // Más redondeado y amigable
-                cursor: 'pointer',
-                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                minHeight: '200px',
-                minWidth: '220px',
-                flex: '1',
-                maxWidth: '280px',
-                padding: '2rem 1.5rem',
-                textAlign: 'center',
-                position: 'relative',
-                overflow: 'hidden',
-                // OPTIMIZADO PARA TABLETS Y TOUCH
-                minTouchTarget: '44px',
-                touchAction: 'manipulation',
-                userSelect: 'none',
-                WebkitTouchCallout: 'none',
-                WebkitUserSelect: 'none',
-                transform: selectedCard() === card.id ? 'translateY(-8px) scale(1.05)' : 'translateY(0) scale(1)',
-                boxShadow: selectedCard() === card.id 
-                  ? '0 25px 50px rgba(0, 102, 204, 0.25), 0 12px 24px rgba(0, 102, 204, 0.15)'
-                  : '0 8px 25px rgba(0, 0, 0, 0.1), 0 4px 12px rgba(0, 0, 0, 0.06)',
-                borderColor: selectedCard() === card.id ? '#0066cc' : '#e9ecef'
-              }}
-              onClick={() => handleCardClick(card.id)}
-              // EVENTOS TÁCTILES OPTIMIZADOS PARA TABLETS
-              onTouchStart={(e) => {
-                e.target.style.transform = 'translateY(-4px) scale(1.03)';
-                e.target.style.boxShadow = '0 15px 35px rgba(0, 102, 204, 0.2)';
-                e.target.style.borderColor = '#0066cc';
-              }}
-              onTouchEnd={(e) => {
-                setTimeout(() => {
-                  if (selectedCard() !== card.id) {
-                    e.target.style.transform = 'translateY(0) scale(1)';
-                    e.target.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.1)';
-                    e.target.style.borderColor = '#e9ecef';
-                  }
-                }, 150);
-              }}
-              onMouseEnter={(e) => {
-                if (selectedCard() !== card.id) {
-                  e.target.style.transform = 'translateY(-4px) scale(1.02)';
-                  e.target.style.boxShadow = '0 15px 35px rgba(0, 102, 204, 0.15)';
-                  e.target.style.borderColor = '#0066cc';
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (selectedCard() !== card.id) {
-                  e.target.style.transform = 'translateY(0) scale(1)';
-                  e.target.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.1)';
-                  e.target.style.borderColor = '#e9ecef';
-                }
-              }}
-            >
-              {/* Efecto de brillo sutil */}
-              <div style={{
-                position: 'absolute',
-                top: 0,
-                left: '-100%',
-                width: '100%',
-                height: '100%',
-                background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)',
-                transform: selectedCard() === card.id ? 'translateX(200%)' : 'translateX(0)',
-                transition: 'transform 0.8s ease',
-                pointerEvents: 'none'
-              }} />
-
-              {/* Icono - MÁS GRANDE PARA TABLETS - CENTRADO */}
-              <div style={{
-                fontSize: '3.5rem',
-                marginBottom: '1.2rem',
-                filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.15))',
-                lineHeight: '1',
-                textAlign: 'center',
-                display: 'flex',
-                justifyContent: 'center',
-                width: '100%'
-              }}>
-                {card.icon}
-              </div>
-
-              {/* Título de la tarjeta - MÁS PROMINENTE - CENTRADO */}
-              <div style={{
-                fontSize: '1.6rem',
-                fontWeight: '700',
-                color: '#1a1a1a',
-                marginBottom: '1rem',
-                letterSpacing: '0.3px',
-                lineHeight: '1.2',
-                textAlign: 'center',
-                width: '100%'
-              }}>
-                {card.title}
-              </div>
-
-              {/* Descripción - LEGIBLE EN TABLETS - CENTRADA */}
-              <div style={{
-                fontSize: '1rem',
-                color: '#6c757d',
-                lineHeight: '1.4',
-                fontWeight: '400',
-                marginBottom: '1.5rem',
-                textAlign: 'center',
-                width: '100%'
-              }}>
-                {card.description}
-              </div>
-
-              {/* Botón seleccionar - OPTIMIZADO PARA TÁCTIL */}
-              <div style={{
-                background: 'linear-gradient(135deg, #0066cc 0%, #003366 100%)',
-                color: 'white',
-                padding: '0.8rem 1.5rem',
-                borderRadius: '8px',
+                background: 'white',
+                color: '#003366',
+                border: 'none',
+                padding: '12px 24px',
+                borderRadius: '12px',
                 fontSize: '1rem',
                 fontWeight: '600',
-                transition: 'all 0.3s ease',
                 cursor: 'pointer',
-                border: 'none',
-                outline: 'none',
-                letterSpacing: '0.5px',
-                minHeight: '44px',
-                minWidth: '120px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}>
-                ✓ Seleccionar
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Línea divisoria elegante */}
-        <div style={{
-          width: '80px',
-          height: '2px',
-          background: 'linear-gradient(90deg, transparent, #d4af37, transparent)',
-          margin: '0 auto 2rem auto',
-          borderRadius: '2px'
-        }} />
-
-        {/* Link administrativo profesional - CENTRADO */}
-        <div style={{
-          textAlign: 'center',
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'center',
-          marginBottom: '2rem'
-        }}>
-          <div style={{
-            padding: '1rem',
-            borderRadius: '12px',
-            background: 'linear-gradient(145deg, rgba(0, 123, 255, 0.05), rgba(0, 102, 204, 0.08))',
-            border: '1px solid rgba(0, 102, 204, 0.1)',
-            display: 'inline-block'
-          }}>
-            <a
-              href="#"
-              style={{
-                color: '#0066cc',
-                textDecoration: 'none',
-                fontSize: '1rem',
-                fontWeight: '500',
-                transition: 'all 0.3s ease',
-                letterSpacing: '0.3px',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                textAlign: 'center'
-              }}
-              onClick={(e) => {
-                e.preventDefault();
-                handleCardClick('admin');
-              }}
-              onMouseEnter={(e) => {
-                e.target.style.color = '#003366';
-                e.target.style.transform = 'scale(1.05)';
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.color = '#0066cc';
-                e.target.style.transform = 'scale(1)';
+                marginTop: '2rem'
               }}
             >
-              <span style={{ fontSize: '1.2rem' }}>🔐</span>
-              Acceso Administrativo
-            </a>
+              ← Volver al Inicio
+            </button>
           </div>
         </div>
-
-        {/* Footer elegante - CENTRADO */}
+      </Match>
+      
+      <Match when={currentPage() === 'checkin'}>
         <div style={{
-          marginTop: '2.5rem',
-          padding: '1rem 0',
-          borderTop: '1px solid rgba(0, 0, 0, 0.05)',
-          color: '#9ca3af',
-          fontSize: '0.85rem',
-          letterSpacing: '0.5px',
+          width: '100vw',
+          height: '100vh',
+          background: 'linear-gradient(135deg, #003366 0%, #0066cc 100%)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: 'white',
+          fontSize: '2rem',
           textAlign: 'center',
-          width: '100%'
+          fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
         }}>
-          Sistema de Gestión de Eventos y Visitantes • CCB © 2025
+          <div>
+            <h1>✅ Módulo de Check-in</h1>
+            <p style={{ fontSize: '1.2rem', marginTop: '1rem' }}>Por implementar</p>
+            <button
+              onClick={goHome}
+              style={{
+                background: 'white',
+                color: '#003366',
+                border: 'none',
+                padding: '12px 24px',
+                borderRadius: '12px',
+                fontSize: '1rem',
+                fontWeight: '600',
+                cursor: 'pointer',
+                marginTop: '2rem'
+              }}
+            >
+              ← Volver al Inicio
+            </button>
+          </div>
         </div>
-      </div>
-    </div>
+      </Match>
+      
+      <Match when={currentPage() === 'home'}>
+        {/* Página de inicio */}
+        <div style={{
+          width: '100vw',
+          height: '100vh',
+          background: 'linear-gradient(135deg, #003366 0%, #0066cc 100%)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          margin: '0',
+          padding: '20px',
+          boxSizing: 'border-box',
+          fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+          position: 'relative'
+        }}>
+          {/* Caja blanca profesional */}
+          <div style={{
+            background: 'rgba(255, 255, 255, 0.98)',
+            borderRadius: '24px',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12), 0 4px 16px rgba(0, 0, 0, 0.08)',
+            padding: '3rem 2rem',
+            maxWidth: '1100px',
+            width: '90%',
+            textAlign: 'center',
+            backdropFilter: 'blur(10px)',
+            border: '1px solid rgba(255, 255, 255, 0.3)',
+            position: 'relative',
+            margin: '0 auto'
+          }}>
+            {/* Logo CCB */}
+            <div style={{
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginBottom: '2.5rem'
+            }}>
+              <img 
+                src="/logo.png" 
+                alt="Centro Cultural Banreservas"
+                style={{
+                  width: '120px',
+                  height: '120px',
+                  objectFit: 'contain',
+                  display: 'block',
+                  filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.1))'
+                }}
+              />
+            </div>
+
+            {/* Título principal */}
+            <h1 style={{
+              fontSize: '2.5rem',
+              color: '#1a1a1a',
+              margin: '0 0 1rem 0',
+              fontWeight: '300',
+              letterSpacing: '-0.5px',
+              lineHeight: '1.2',
+              textAlign: 'center'
+            }}>
+              ¡Bienvenido al Centro Cultural Banreservas!
+            </h1>
+
+            {/* Subtítulo */}
+            <p style={{
+              color: '#6c757d',
+              margin: '0 0 3rem 0',
+              fontSize: '1.2rem',
+              fontWeight: '400',
+              textAlign: 'center'
+            }}>
+              Por favor seleccione una opción:
+            </p>
+
+            {/* Grid de tarjetas */}
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              gap: '1.5rem',
+              marginBottom: '3rem',
+              width: '100%'
+            }}>
+              {kioskCards.map((card) => (
+                <div
+                  key={card.id}
+                  style={{
+                    background: card.id === 'events' 
+                      ? 'linear-gradient(135deg, #9333ea 0%, #c026d3 100%)'
+                      : card.id === 'register'
+                      ? 'linear-gradient(135deg, #ec4899 0%, #f472b6 100%)'
+                      : 'linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%)',
+                    borderRadius: '20px',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                    minHeight: '220px',
+                    flex: '1',
+                    padding: '2rem 1.5rem',
+                    textAlign: 'center',
+                    position: 'relative',
+                    overflow: 'hidden',
+                    color: 'white',
+                    touchAction: 'manipulation',
+                    userSelect: 'none',
+                    transform: selectedCard() === card.id ? 'translateY(-8px) scale(1.05)' : 'translateY(0) scale(1)',
+                    boxShadow: selectedCard() === card.id 
+                      ? '0 25px 50px rgba(0, 0, 0, 0.25)'
+                      : '0 8px 25px rgba(0, 0, 0, 0.15)'
+                  }}
+                  onClick={() => handleCardClick(card.id)}
+                  onMouseEnter={(e) => {
+                    if (selectedCard() !== card.id) {
+                      e.currentTarget.style.transform = 'translateY(-4px) scale(1.02)';
+                      e.currentTarget.style.boxShadow = '0 15px 35px rgba(0, 0, 0, 0.2)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (selectedCard() !== card.id) {
+                      e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                      e.currentTarget.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.15)';
+                    }
+                  }}
+                >
+                  {/* Efecto de brillo */}
+                  <div style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: '-100%',
+                    width: '100%',
+                    height: '100%',
+                    background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)',
+                    transform: selectedCard() === card.id ? 'translateX(200%)' : 'translateX(0)',
+                    transition: 'transform 0.8s ease',
+                    pointerEvents: 'none'
+                  }} />
+
+                  {/* Icono */}
+                  <div style={{
+                    fontSize: '3.5rem',
+                    marginBottom: '1.2rem',
+                    filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.2))',
+                    textAlign: 'center'
+                  }}>
+                    {card.icon}
+                  </div>
+
+                  {/* Título */}
+                  <div style={{
+                    fontSize: '1.6rem',
+                    fontWeight: '700',
+                    marginBottom: '1rem',
+                    textAlign: 'center',
+                    textShadow: '0 2px 4px rgba(0,0,0,0.2)'
+                  }}>
+                    {card.title}
+                  </div>
+
+                  {/* Descripción */}
+                  <div style={{
+                    fontSize: '1rem',
+                    lineHeight: '1.4',
+                    marginBottom: '1.5rem',
+                    textAlign: 'center',
+                    opacity: 0.9
+                  }}>
+                    {card.description}
+                  </div>
+
+                  {/* Indicador de acción */}
+                  <div style={{
+                    fontSize: '0.9rem',
+                    opacity: 0.8,
+                    textAlign: 'center',
+                    fontWeight: '500'
+                  }}>
+                    Toca para continuar →
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Línea divisoria */}
+            <div style={{
+              width: '80px',
+              height: '2px',
+              background: 'linear-gradient(90deg, transparent, #d4af37, transparent)',
+              margin: '0 auto 2rem auto'
+            }} />
+
+            {/* Link administrativo */}
+            <div style={{ textAlign: 'center' }}>
+              <button
+                style={{
+                  background: 'transparent',
+                  border: '2px solid #0066cc',
+                  color: '#0066cc',
+                  padding: '0.8rem 2rem',
+                  borderRadius: '12px',
+                  fontSize: '1rem',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.5rem'
+                }}
+                onClick={() => handleCardClick('admin')}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = '#0066cc';
+                  e.currentTarget.style.color = 'white';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'transparent';
+                  e.currentTarget.style.color = '#0066cc';
+                }}
+              >
+                <span>🔐</span>
+                Acceso Administrativo
+              </button>
+            </div>
+
+            {/* Footer */}
+            <div style={{
+              marginTop: '2.5rem',
+              padding: '1rem 0',
+              borderTop: '1px solid rgba(0, 0, 0, 0.05)',
+              color: '#9ca3af',
+              fontSize: '0.85rem',
+              textAlign: 'center'
+            }}>
+              Sistema de Gestión de Eventos y Visitantes • CCB © 2025
+            </div>
+          </div>
+        </div>
+      </Match>
+    </Switch>
   );
 }
 
