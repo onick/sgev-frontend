@@ -181,58 +181,77 @@ function App() {
             position: 'relative',
             margin: '0 auto'
           }}>
-            {/* Logo CCB */}
+            {/* Logo CCB - CENTRADO */}
             <div style={{
               width: '100%',
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              marginBottom: '2.5rem'
+              marginBottom: '2rem'
             }}>
               <img 
                 src="/logo.png" 
                 alt="Centro Cultural Banreservas"
                 style={{
-                  width: '120px',
-                  height: '120px',
+                  width: '140px',
+                  height: '140px',
                   objectFit: 'contain',
                   display: 'block',
-                  filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.1))'
+                  margin: '0 auto',
+                  filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.15))'
                 }}
               />
             </div>
 
-            {/* Título principal */}
-            <h1 style={{
-              fontSize: '2.5rem',
-              color: '#1a1a1a',
-              margin: '0 0 1rem 0',
-              fontWeight: '300',
-              letterSpacing: '-0.5px',
-              lineHeight: '1.2',
-              textAlign: 'center'
+            {/* Título principal - PERFECTAMENTE CENTRADO */}
+            <div style={{
+              width: '100%',
+              textAlign: 'center',
+              marginBottom: '1.5rem'
             }}>
-              ¡Bienvenido al Centro Cultural Banreservas!
-            </h1>
+              <h1 style={{
+                fontSize: '2.8rem',
+                color: '#1a1a1a',
+                margin: '0',
+                fontWeight: '300',
+                letterSpacing: '-0.5px',
+                lineHeight: '1.2',
+                textAlign: 'center',
+                display: 'block',
+                width: '100%'
+              }}>
+                ¡Bienvenido al Centro Cultural Banreservas!
+              </h1>
+            </div>
 
-            {/* Subtítulo */}
-            <p style={{
-              color: '#6c757d',
-              margin: '0 0 3rem 0',
-              fontSize: '1.2rem',
-              fontWeight: '400',
-              textAlign: 'center'
+            {/* Subtítulo - PERFECTAMENTE CENTRADO */}
+            <div style={{
+              width: '100%',
+              textAlign: 'center',
+              marginBottom: '3.5rem'
             }}>
-              Por favor seleccione una opción:
-            </p>
+              <p style={{
+                color: '#6c757d',
+                margin: '0',
+                fontSize: '1.3rem',
+                fontWeight: '400',
+                textAlign: 'center',
+                display: 'block',
+                width: '100%'
+              }}>
+                Por favor seleccione una opción:
+              </p>
+            </div>
 
-            {/* Grid de tarjetas */}
+            {/* Grid de tarjetas - CUADRADAS Y CENTRADAS */}
             <div style={{
               display: 'flex',
-              justifyContent: 'space-between',
-              gap: '1.5rem',
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: '2rem',
               marginBottom: '3rem',
-              width: '100%'
+              width: '100%',
+              flexWrap: 'wrap'
             }}>
               {kioskCards.map((card) => (
                 <div
@@ -243,22 +262,27 @@ function App() {
                       : card.id === 'register'
                       ? 'linear-gradient(135deg, #ec4899 0%, #f472b6 100%)'
                       : 'linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%)',
-                    borderRadius: '20px',
+                    borderRadius: '16px',
                     cursor: 'pointer',
                     transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                    minHeight: '220px',
-                    flex: '1',
-                    padding: '2rem 1.5rem',
-                    textAlign: 'center',
+                    width: '300px',
+                    height: '300px',
+                    padding: '2.5rem 2rem',
                     position: 'relative',
                     overflow: 'hidden',
                     color: 'white',
                     touchAction: 'manipulation',
                     userSelect: 'none',
-                    transform: selectedCard() === card.id ? 'translateY(-8px) scale(1.05)' : 'translateY(0) scale(1)',
+                    transform: selectedCard() === card.id ? 'translateY(-8px) scale(1.02)' : 'translateY(0) scale(1)',
                     boxShadow: selectedCard() === card.id 
-                      ? '0 25px 50px rgba(0, 0, 0, 0.25)'
-                      : '0 8px 25px rgba(0, 0, 0, 0.15)'
+                      ? '0 20px 40px rgba(0, 0, 0, 0.3)'
+                      : '0 8px 16px rgba(0, 0, 0, 0.2)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    textAlign: 'center',
+                    gap: '1rem'
                   }}
                   onClick={() => handleCardClick(card.id)}
                   onMouseEnter={(e) => {
@@ -287,44 +311,57 @@ function App() {
                     pointerEvents: 'none'
                   }} />
 
-                  {/* Icono */}
+                  {/* Icono - CENTRADO Y ELEGANTE */}
                   <div style={{
-                    fontSize: '3.5rem',
-                    marginBottom: '1.2rem',
+                    fontSize: '3rem',
+                    marginBottom: '0.5rem',
                     filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.2))',
-                    textAlign: 'center'
+                    textAlign: 'center',
+                    display: 'block'
                   }}>
                     {card.icon}
                   </div>
 
-                  {/* Título */}
-                  <div style={{
-                    fontSize: '1.6rem',
+                  {/* Título - H1 CON MUCHA IMPORTANCIA */}
+                  <h1 style={{
+                    fontSize: '2rem',
                     fontWeight: '700',
-                    marginBottom: '1rem',
+                    margin: '0 0 1rem 0',
                     textAlign: 'center',
-                    textShadow: '0 2px 4px rgba(0,0,0,0.2)'
+                    textShadow: '0 2px 4px rgba(0,0,0,0.2)',
+                    lineHeight: '1.2',
+                    letterSpacing: '-0.5px',
+                    width: '100%'
                   }}>
                     {card.title}
-                  </div>
+                  </h1>
 
-                  {/* Descripción */}
-                  <div style={{
+                  {/* Descripción - CENTRALIZADA */}
+                  <p style={{
                     fontSize: '1rem',
-                    lineHeight: '1.4',
-                    marginBottom: '1.5rem',
+                    lineHeight: '1.5',
+                    margin: '0 0 1.5rem 0',
                     textAlign: 'center',
-                    opacity: 0.9
+                    opacity: 0.95,
+                    fontWeight: '300',
+                    width: '100%'
                   }}>
                     {card.description}
-                  </div>
+                  </p>
 
-                  {/* Indicador de acción */}
+                  {/* Indicador de acción - ELEGANTE Y CENTRADO */}
                   <div style={{
                     fontSize: '0.9rem',
-                    opacity: 0.8,
+                    opacity: 0.9,
                     textAlign: 'center',
-                    fontWeight: '500'
+                    fontWeight: '500',
+                    display: 'block',
+                    marginTop: 'auto',
+                    padding: '0.5rem 1rem',
+                    borderRadius: '8px',
+                    background: 'rgba(255, 255, 255, 0.15)',
+                    backdropFilter: 'blur(10px)',
+                    width: 'fit-content'
                   }}>
                     Toca para continuar →
                   </div>
@@ -332,16 +369,30 @@ function App() {
               ))}
             </div>
 
-            {/* Línea divisoria */}
+            {/* Línea divisoria - CENTRADA */}
             <div style={{
-              width: '80px',
-              height: '2px',
-              background: 'linear-gradient(90deg, transparent, #d4af37, transparent)',
-              margin: '0 auto 2rem auto'
-            }} />
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'center',
+              marginBottom: '2rem'
+            }}>
+              <div style={{
+                width: '80px',
+                height: '2px',
+                background: 'linear-gradient(90deg, transparent, #d4af37, transparent)',
+                borderRadius: '1px'
+              }} />
+            </div>
 
-            {/* Link administrativo */}
-            <div style={{ textAlign: 'center' }}>
+            {/* Link administrativo - PERFECTAMENTE CENTRADO */}
+            <div style={{
+              width: '100%',
+              textAlign: 'center',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginBottom: '2rem'
+            }}>
               <button
                 style={{
                   background: 'transparent',
@@ -372,14 +423,18 @@ function App() {
               </button>
             </div>
 
-            {/* Footer */}
+            {/* Footer - PERFECTAMENTE CENTRADO */}
             <div style={{
+              width: '100%',
               marginTop: '2.5rem',
               padding: '1rem 0',
               borderTop: '1px solid rgba(0, 0, 0, 0.05)',
               color: '#9ca3af',
               fontSize: '0.85rem',
-              textAlign: 'center'
+              textAlign: 'center',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center'
             }}>
               Sistema de Gestión de Eventos y Visitantes • CCB © 2025
             </div>
